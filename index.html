@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Self-Appraisal | Renaissance Jewel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #fcfbf9; color: #1a1a1a; scroll-behavior: smooth; }
+        h1, h2, h3, h4, .serif { font-family: 'Playfair Display', serif; }
+        .gold-accent { color: #b08d57; }
+        .bg-gold { background-color: #b08d57; }
+        .border-gold { border-color: #b08d57; }
+        
+        /* Form Element Styling */
+        input[type="text"], input[type="number"], input[type="date"], select, textarea {
+            width: 100%; padding: 0.75rem; border: 1px solid #e2e2e2; border-radius: 4px; 
+            background: #fafafa; transition: all 0.3s; font-size: 0.95rem; margin-top: 0.5rem;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none; border-color: #b08d57; background: #ffffff; box-shadow: 0 0 0 3px rgba(176, 141, 87, 0.1);
+        }
+        
+        /* Buttons */
+        .btn-gold { background-color: #b08d57; color: white; transition: all 0.3s; }
+        .btn-gold:hover { background-color: #8e7145; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(176, 141, 87, 0.2); }
+        
+        /* Cards & Layout */
+        .section-card { background: white; border: 1px solid #f0ede8; border-radius: 8px; padding: 2.5rem; margin-bottom: 2.5rem; box-shadow: 0 4px 20px -5px rgba(0,0,0,0.03); }
+        .section-title { font-size: 1.5rem; border-bottom: 1px solid #eaeaea; padding-bottom: 1rem; margin-bottom: 1.5rem; font-weight: 600; }
+        
+        /* Custom Toast Notification */
+        #toast { visibility: hidden; min-width: 250px; background-color: #1a1a1a; color: #fff; text-align: center; border-radius: 4px; padding: 16px; position: fixed; z-index: 50; left: 50%; bottom: 30px; transform: translateX(-50%); font-size: 15px; }
+        #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+    </style>
+</head>
+<body class="py-12 px-4 md:px-8">
+
+    <div class="max-w-5xl mx-auto">
+        <!-- Header -->
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-bold mb-3 uppercase tracking-widest text-gray-900">Renaissance Jewel</h1>
+            <p class="italic gold-accent text-xl serif">Where Craftsmanship Meets Conscience</p>
+            <div class="h-px bg-gray-300 w-32 mx-auto mt-8 mb-8"></div>
+            <h2 class="text-3xl font-light text-gray-700">Annual Performance Self-Appraisal</h2>
+        </header>
+
+        <form id="appraisalForm" class="space-y-8">
+            
+            <!-- Employee Information (Updated with Year Dropdown) -->
+            <div class="section-card border-t-4 border-t-[#b08d57]">
+                <h3 class="section-title">Employee Details</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 uppercase tracking-wider">Appraisal Year *</label>
+                        <select name="appraisalYear" required>
+                            <option value="" disabled selected>Select Year</option>
+                            <option value="2025">2025</option>
+                            <option value="2026">2026</option>
+                            <option value="2027">2027</option>
+                            <option value="2028">2028</option>
+                            <option value="2029">2029</option>
+                            <option value="2030">2030</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 uppercase tracking-wider">Full Name *</label>
+                        <input type="text" name="employeeName" required placeholder="Jane Doe">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 uppercase tracking-wider">Department / Team *</label>
+                        <select name="team" id="teamSelect" required>
+                            <option value="" disabled selected>Select your team</option>
+                            <option value="Customer Support">Customer Support</option>
+                            <option value="Sales">Sales</option>
+                            <option value="Marketing">Marketing</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 uppercase tracking-wider">Date Submitted *</label>
+                        <input type="date" name="submissionDate" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Added Section: Brand Alignment (Luxury Focus) -->
+            <div class="section-card">
+                <h3 class="section-title">0. Brand Alignment & Luxury Experience</h3>
+                <div class="space-y-6">
+                    <div>
+                        <label class="block font-medium text-gray-800">How do you ensure every client interaction or campaign reflects our "Modern Luxury" standard?</label>
+                        <textarea name="brandAlignment" rows="3" required placeholder="Describe how you uphold the Renaissance brand values..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 1: KRA -->
+            <div class="section-card">
+                <h3 class="section-title">1. Key Result Areas (KRA)</h3>
+                <div class="space-y-8">
+                    <div>
+                        <label class="block font-medium text-gray-800">1) What do you think is your primary responsibility as a <span class="dynamic-role font-bold text-[#b08d57]">[Select Team Above]</span>?</label>
+                        <textarea name="kraPrimaryResp" rows="3" required></textarea>
+                    </div>
+                    
+                    <div class="bg-gray-50 p-6 rounded-lg border border-gray-100">
+                        <label class="block font-medium text-gray-800 mb-4">2) What are the top 5 skills required in your job? Rate your own proficiency out of these 5 (Scale: 1 = Needs Work, 5 = Expert).</label>
+                        <!-- Dynamic Skills Table -->
+                        <div class="grid grid-cols-12 gap-4 font-semibold text-sm text-gray-500 uppercase tracking-wider mb-2 hidden md:grid">
+                            <div class="col-span-1">No.</div>
+                            <div class="col-span-8">Skill Name</div>
+                            <div class="col-span-3">Rating (1-5)</div>
+                        </div>
+                        
+                        <!-- Skill 1-5 Inputs -->
+                        <script>
+                            for(let i=1; i<=5; i++) {
+                                document.write(`
+                                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 mb-3 items-center">
+                                    <div class="col-span-1 hidden md:block text-gray-400 font-medium">#${i}</div>
+                                    <div class="col-span-1 md:col-span-8">
+                                        <input type="text" name="skillName${i}" placeholder="Enter Skill ${i}" required>
+                                    </div>
+                                    <div class="col-span-1 md:col-span-3">
+                                        <select name="skillRating${i}" required>
+                                            <option value="" disabled selected>Rating</option>
+                                            <option value="1">1 - Beginner</option>
+                                            <option value="2">2 - Novice</option>
+                                            <option value="3">3 - Competent</option>
+                                            <option value="4">4 - Proficient</option>
+                                            <option value="5">5 - Expert</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                `);
+                            }
+                        </script>
+                    </div>
+
+                    <div>
+                        <label class="block font-medium text-gray-800">3) How do you think your role also requires cross-functional skills (e.g., Support using Sales skills, Marketing using Support empathy)? Explain with a scenario.</label>
+                        <textarea name="kraCrossFunctional" rows="3" required></textarea>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block font-medium text-gray-800">4) How consistently are you able to satisfy clients or resolve queries? How easy do you find this?</label>
+                            <textarea name="kraConsistency" rows="3" required></textarea>
+                        </div>
+                        <div>
+                            <label class="block font-medium text-gray-800">5) What do you think are your current KRAs? How well are you achieving your goals?</label>
+                            <textarea name="kraCurrentGoals" rows="3" required></textarea>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block font-medium text-gray-800">6) Quantifiable Metrics: How many sales/successful campaigns/major resolutions have you achieved during your time here?</label>
+                            <textarea name="kraMetrics" rows="2" required></textarea>
+                        </div>
+                        <div>
+                            <label class="block font-medium text-gray-800">7) Task Management: How do you manage your day-to-day tasks? Do you have a special method?</label>
+                            <textarea name="kraTaskMgmt" rows="2" required></textarea>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block font-medium text-gray-800">8) How do you manage your busy days?</label>
+                        <textarea name="kraBusyDays" rows="2" required></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 2: Technical Knowledge -->
+            <div class="section-card">
+                <h3 class="section-title">2. Technical Knowledge & Product Expertise</h3>
+                <div class="space-y-6">
+                    <div class="flex flex-col md:flex-row md:items-center gap-4">
+                        <label class="block font-medium text-gray-800 flex-grow">1) How would you rate your product knowledge on a scale of 1 to 5?</label>
+                        <select name="techProductRating" required class="w-full md:w-48 mt-0">
+                            <option value="" disabled selected>Select Rating</option>
+                            <option value="1">1 - Poor</option>
+                            <option value="2">2 - Fair</option>
+                            <option value="3">3 - Good</option>
+                            <option value="4">4 - Very Good</option>
+                            <option value="5">5 - Excellent</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block font-medium text-gray-800">2) Please summarize your knowledge about diamond specifications (4Cs), our jewelry types, and the technical info required before a customer places an order.</label>
+                        <textarea name="techDiamondSpecs" rows="3" required></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block font-medium text-gray-800">3) How well do you understand the specific technical differences and sustainability of *lab-grown* diamonds vs mined?</label>
+                        <textarea name="techLabGrown" rows="2" required></textarea>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block font-medium text-gray-800">4) Knowledge Sharing: Have you contributed to internal FAQs or the company knowledge base to help the team?</label>
+                            <textarea name="techKnowledgeSharing" rows="3" required></textarea>
+                        </div>
+                        <div>
+                            <label class="block font-medium text-gray-800">5) Accuracy: How consistently are you providing correct technical information to customers on the first try?</label>
+                            <textarea name="techAccuracy" rows="3" required></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 3: Soft Skills & Crisis Management -->
+            <div class="section-card">
+                <h3 class="section-title">3. Soft Skills & Crisis Management</h3>
+                <div class="space-y-6">
+                    <div>
+                        <label class="block font-medium text-gray-800">1) Describe a time you turned a frustrated or unhappy customer into a satisfied one. What approach did you take?</label>
+                        <textarea name="softSkillsFrustratedClient" rows="3" required></textarea>
+                    </div>
+                    <div>
+                        <label class="block font-medium text-gray-800">2) How do you adapt your tone for different customer personas (e.g., first-time buyers vs. repeat professional clients)?</label>
+                        <textarea name="softSkillsTone" rows="2" required></textarea>
+                    </div>
+                    <div>
+                        <label class="block font-medium text-gray-800">3) How effectively do you work with other departments (like Sales, Marketing, or Logistics) to solve issues?</label>
+                        <textarea name="softSkillsCollaboration" rows="2" required></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 4: Process Improvements -->
+            <div class="section-card">
+                <h3 class="section-title">4. Process Improvements</h3>
+                <div class="space-y-6">
+                    <div>
+                        <label class="block font-medium text-gray-800">1) Did you notice any recurring customer complaints, bottlenecks, or bugs this period? How did you report or address them?</label>
+                        <textarea name="processRecurringIssues" rows="3" required></textarea>
+                    </div>
+                    <div>
+                        <label class="block font-medium text-gray-800">2) Have you suggested or implemented a shortcut, template, or workflow change that saved time for the team?</label>
+                        <textarea name="processShortcuts" rows="3" required></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 5: Professional Development & Goals -->
+            <div class="section-card">
+                <h3 class="section-title">5. Professional Development & Future Goals</h3>
+                <div class="space-y-6">
+                    <div>
+                        <label class="block font-medium text-gray-800">1) Is there a specific area of the product, design process, or a software tool you want to master?</label>
+                        <textarea name="goalsMastery" rows="2" required></textarea>
+                    </div>
+                    <div>
+                        <label class="block font-medium text-gray-800">2) Are you interested in moving toward lead roles (e.g., Escalation Lead, Sales Manager, On-the-Job Trainer)? Please elaborate.</label>
+                        <textarea name="goalsLeadRoles" rows="3" required></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="text-center pb-12">
+                <button type="submit" id="submitBtn" class="btn-gold px-12 py-4 rounded font-bold uppercase tracking-widest text-lg w-full md:w-auto shadow-lg">
+                    Submit Formal Appraisal
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast">✅ Appraisal submitted successfully!</div>
+
+    <script>
+        // --- 1. Dynamic Role Update Logic ---
+        const teamSelect = document.getElementById('teamSelect');
+        const dynamicRoles = document.querySelectorAll('.dynamic-role');
+
+        teamSelect.addEventListener('change', function() {
+            const roleStr = this.value === 'Marketing' ? 'Marketing Professional' : 
+                            this.value === 'Sales' ? 'Sales Representative' : 
+                            'Customer Support Representative';
+            
+            dynamicRoles.forEach(el => {
+                el.innerText = roleStr;
+            });
+        });
+
+        // --- 2. Form Submission to Google Apps Script ---
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwpHhmvdpdWPLZ_llaw0rKhvJ85si_LlyBa22G6bkicy7cunQOK52RimOHuf22bp3YAXQ/exec'; // <--- REPLACE THIS BEFORE UPLOADING
+        const form = document.getElementById('appraisalForm');
+        const submitBtn = document.getElementById('submitBtn');
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            
+            // UI Feedback during submission
+            submitBtn.disabled = true;
+            submitBtn.innerText = 'Submitting Data...';
+            submitBtn.classList.add('opacity-75', 'cursor-not-allowed');
+
+            fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+                .then(response => {
+                    showToast();
+                    form.reset();
+                    // Reset dynamic text
+                    dynamicRoles.forEach(el => el.innerText = '[Select Team Above]');
+                    restoreButton();
+                })
+                .catch(error => {
+                    console.error('Error!', error.message);
+                    alert('There was an error connecting to the server. Please check your internet connection or contact HR.');
+                    restoreButton();
+                });
+        });
+
+        function restoreButton() {
+            submitBtn.disabled = false;
+            submitBtn.innerText = 'Submit Formal Appraisal';
+            submitBtn.classList.remove('opacity-75', 'cursor-not-allowed');
+        }
+
+        function showToast() {
+            const toast = document.getElementById("toast");
+            toast.className = "show";
+            setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
+        }
+    </script>
+</body>
+</html>
